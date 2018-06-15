@@ -48,3 +48,34 @@ It is also unlikely to work effectively if your machine has only 4GB of RAM as t
 to 4GB even without loading a save, resulting in virtual memory paging which will seriously hurt performance.
 
 The code is released under the MIT license (see https://github.com/Gerry1135/MemGraph/blob/master/Graph.cs).
+
+Updated by LinuxGuruGamer
+
+# Logging
+The mod now has the ability to write the data to a set of log files.  The files are written in the root of
+the game directory.
+
+Logging can be enabled by editing the settings.cfg file.  Set the following to true to turn on logging, false to turn it off:
+
+	enableLogging = true
+
+The first set of files will only have a single value in them at any time.  This will be the last value which
+was plotted.  The name of the file corresponds to the data item as shown on screen:
+
+	dataLog.Cur.txt
+	dataLog.HeapMin.txt
+	dataLog.Interval.txt
+	dataLog.Last.txt
+	dataLog.Max.txt
+	dataLog.P.txt
+	dataLog.R.txt
+
+This last file is a sequential log, and is overwritten every time the game starts.  The log is formatted
+as a CSV file, and the first line contains the column headers
+
+	dataLog.Log.txt
+
+I plan on making the following additions:
+
+1.  Have a key which will write a marker to the log file, so you can mark events
+2.  Make the logging a runtime option instead of statically in the config file
