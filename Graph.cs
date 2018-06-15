@@ -21,11 +21,13 @@
 */
 
 using System;
+//using System.IO;
 using System.Diagnostics;
 using System.Text;
 using UnityEngine;
 using KSP;
 using KSP.IO;
+
 
 namespace MemGraph
 {
@@ -104,6 +106,8 @@ namespace MemGraph
         KeyCode keyScaleDown;
         KeyCode keyRunTests;
         KeyCode keyPadHeap;
+
+        bool enableLogging = false;
 
         int scaleIndex = 4;         // Index of the current vertical scale
         static double[] valCycle;
@@ -236,6 +240,8 @@ namespace MemGraph
                             ReadKeyCode(val, ref keyRunTests, KeyCode.KeypadDivide);
                         else if (key == "keyPadHeap")
                             ReadKeyCode(val, ref keyPadHeap, KeyCode.End);
+                        else if (key == "enableLogging")
+                            ReadBool(val, ref enableLogging);
                         else
                         {
                             Log.buf.Append("Ignoring invalid key in settings: '");
@@ -309,7 +315,32 @@ namespace MemGraph
                     fullUpdate = true;
             }
         }
+        string line = "";
+        string filenames = "";
+        const string separator = ",";
+        public string ROOT_PATH = KSPUtil.ApplicationRootPath;
+        public string filePrefix = "dataLog";
+        public string fileSuffix = ".txt";
+        public bool unixFormat = false;
+        public string eol = "\r\n";
+        string singleLineStr;
+        bool header = false;
 
+        public void WriteFile(string fileName, string value, bool singleLine)
+        {
+            {
+                string fname = ROOT_PATH + filePrefix + "." + fileName + fileSuffix;
+                filenames += fname + ":";
+                //Log.Info("WriteFile, file: " + cfg.ROOT_PATH + "/" + cfg.filePrefix);
+
+                if (singleLine)
+                    System.IO.File.WriteAllText(fname, value + eol);
+                else
+                    System.IO.File.AppendAllText(fname, value + eol);
+            }
+            singleLineStr += value + separator;
+            //  Log.Debug(fmt);
+        }
         void UpdateGuiStr()
         {
             // We use a static StringBuilder to do this to avoid as much garbage as possible
@@ -332,6 +363,28 @@ namespace MemGraph
             strBuild.Append(lastGCInterval);
             strBuild.Append(" s");
             guiStr = strBuild.ToString();
+
+            if (enableLogging)
+            {
+                // Now write to log files
+                // The first set are to individual files, this is for instant viewing
+                if (!header)
+                {
+                    header = true;
+                    singleLineStr = "HeapMin, Cur, Max, Last, R, P, Interval";
+                    WriteFile("Log", singleLineStr, true);
+                }
+                singleLineStr = "";
+                WriteFile("HeapMin", lastMinHeapMB.ToString(), true);
+                WriteFile("Cur", lastAllocMB.ToString(), true);
+                WriteFile("Max", lastMaxHeapMB.ToString(), true);
+                WriteFile("Last", (lastValue / 1024).ToString(), true);
+                WriteFile("R", lastUpdateCount.ToString(), true);
+                WriteFile("P", lastFixedCount.ToString(), true);
+                WriteFile("Interval", lastGCInterval.ToString(), true);
+                // Now write all the values to a log file
+                WriteFile("Log", singleLineStr, false);
+            }
         }
 
         void FixedUpdate()
