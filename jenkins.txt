@@ -28,6 +28,7 @@
 1:MemGraph, MemGraph.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
+2c: /unsafe
 2:MemGraph,MemGraph/MemGraph.csproj,MemGraph.version,GameData/MemGraph/Plugins
 
 # 3:SOURCEFILE, DESTDIR
