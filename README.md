@@ -61,7 +61,7 @@ Logging can be enabled at startup by editing the settings.cfg file.  Set the fol
 
 	enableLogging = true
 
-#Logging Controls
+# Logging Controls
 	Mod-Home writes a marker to the log file (if logging is enabled, see below)
 	Mod-PageUp toggles logging
 
