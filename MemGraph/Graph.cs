@@ -106,6 +106,8 @@ namespace MemGraph
         KeyCode keyScaleDown;
         KeyCode keyRunTests;
         KeyCode keyPadHeap;
+        KeyCode keyMark;
+        KeyCode keyToggleLogging;
 
         bool enableLogging = false;
 
@@ -242,12 +244,17 @@ namespace MemGraph
                             ReadKeyCode(val, ref keyPadHeap, KeyCode.End);
                         else if (key == "enableLogging")
                             ReadBool(val, ref enableLogging);
+                        else if (key == "keyMark")
+                            ReadKeyCode(val, ref keyMark, KeyCode.Home);
+                        else if (key == "keyToggleLogging")
+                            ReadKeyCode(val, ref keyToggleLogging, KeyCode.PageUp);                        
                         else
                         {
                             Log.buf.Append("Ignoring invalid key in settings: '");
                             Log.buf.Append(lines[i]);
                             Log.buf.AppendLine("'");
                         }
+
                     }
                     else
                     {
@@ -315,14 +322,13 @@ namespace MemGraph
                     fullUpdate = true;
             }
         }
-        string line = "";
-        string filenames = "";
+
         const string separator = ",";
-        public string ROOT_PATH = KSPUtil.ApplicationRootPath;
-        public string filePrefix = "dataLog";
-        public string fileSuffix = ".txt";
-        public bool unixFormat = false;
-        public string eol = "\r\n";
+        string ROOT_PATH = KSPUtil.ApplicationRootPath;
+        string filePrefix = "dataLog";
+        string fileSuffix = ".txt";
+        //bool unixFormat = false;
+        string eol = "\r\n";
         string singleLineStr;
         bool header = false;
 
@@ -330,17 +336,15 @@ namespace MemGraph
         {
             {
                 string fname = ROOT_PATH + filePrefix + "." + fileName + fileSuffix;
-                filenames += fname + ":";
-                //Log.Info("WriteFile, file: " + cfg.ROOT_PATH + "/" + cfg.filePrefix);
-
+                
                 if (singleLine)
                     System.IO.File.WriteAllText(fname, value + eol);
                 else
                     System.IO.File.AppendAllText(fname, value + eol);
             }
             singleLineStr += value + separator;
-            //  Log.Debug(fmt);
         }
+
         void UpdateGuiStr()
         {
             // We use a static StringBuilder to do this to avoid as much garbage as possible
@@ -386,7 +390,16 @@ namespace MemGraph
                 WriteFile("Log", singleLineStr, false);
             }
         }
-
+        int markCnt = 0;
+        void WriteMarkToLog()
+        {
+            if (enableLogging)
+            {
+                markCnt++;
+                WriteFile("Log", "***** Mark # " + markCnt + " *****", false);
+                ScreenMessages.PostScreenMessage("MemGraph: Mark # " + markCnt + " written to log", 5f);
+            }
+        }
         void FixedUpdate()
         {
             fixedCount += 1;
@@ -426,6 +439,18 @@ namespace MemGraph
                     scaleIndex = (scaleIndex + numScales - 1) % numScales;
                     UpdateGuiStr();
                     fullUpdate = true;
+                }
+                if (Input.GetKeyDown(keyMark))
+                {
+                    WriteMarkToLog();
+                }
+                if (Input.GetKeyDown(keyToggleLogging))
+                {
+                    enableLogging = !enableLogging;
+                    if (enableLogging)
+                        ScreenMessages.PostScreenMessage("MemGraph: Logging enabled", 5f);
+                    else
+                        ScreenMessages.PostScreenMessage("MemGraph: Logging disabled", 5f);
                 }
             }
 
@@ -615,7 +640,7 @@ namespace MemGraph
                 Log.buf.Append(endCount);
                 Log.buf.AppendLine(")");
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 Log.buf.Append("Exception caught: ");
                 Log.buf.AppendLine(exp.ToString());
@@ -653,11 +678,13 @@ namespace MemGraph
                 Log.buf.AppendLine(exp.ToString());
                 variable = defValue;
             }
+            Log.Flush();
         }
 
         void Trace(String message)
         {
             Log.buf.AppendLine(message);
+            Log.Flush();
         }
     }
 }

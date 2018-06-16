@@ -34,14 +34,14 @@ namespace MemGraph
     class Item16
     {
         public Item16 next = null;
-        double d2;
+        double d2; // Here to force space allocation
     }
 
     class Item24
     {
         public Item24 next = null;
-        double d2;
-        double d3;
+        double d2;// Here to force space allocation
+        double d3;// Here to force space allocation
     }
 
     class PadHeap

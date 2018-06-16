@@ -1,0 +1,48 @@
+1.1.1.0
+	Adoption by LGG
+	Created Changelog from git history
+	Added ability to write data to log files
+	Added new key to write a marker to the log file
+
+1.1.0.3
+	Fixed duplicate instance on reload database
+
+1.1.0.2
+	Another fix for KSP failing to start when applyPadding = true
+
+1.0.0.11
+	Another fix for KSP failing to start when applyPadding = true
+
+1.1.0.1
+	Updated for KSP 1.2
+
+1.0.0.10
+	Updated for KSP 1.2
+
+1.0.0.9
+	Keybindings, window visibility and padding enabling now configurable in settings.cfg.
+	Heap padding configuration is now weights of block sizes and total megabytes of padding.
+
+1.0.0.7
+	Heap padding is now configurable
+	Minimum and maximum heap size and GC interval now displayed
+
+1.0.0.6
+	Implemented heap padding mechanism on Mod-End to greatly increase the…headroom on the mono heap
+
+1.0.0.5
+	Updated to 1.0.0.5
+
+1.0.0.4
+	Fixed rectangle passed to DragWindow
+
+1.0.0.3
+	Updated to 1.0.0.3
+
+1.0.0.2
+	Updated version to 1.0.0.2
+
+1.0.0.1
+	
+1.0.0.0
+	Initial release

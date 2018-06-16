@@ -15,6 +15,8 @@ Mod-KeypadPlus increases the vertical scale of the graph.
 Mod-KeypadMinus decreases the vertical scale of the graph.  
 Mod-KeypadDivide runs a bit of test code controlled by MemGraph\PluginData\test.cfg.  
 Mod-End pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.
+Mod-Home writes a marker to the log file (if logging is enabled, see below)
+Mod-PageUp toggles logging
 
 Every second the plugin totals up all the memory allocated on the heap and whether any garbage collections have run.  It also 
 displays the current total heap allocation, the maximum heap allocation just before the last garbage collection, the minimum 
@@ -77,5 +79,4 @@ as a CSV file, and the first line contains the column headers
 
 I plan on making the following additions:
 
-1.  Have a key which will write a marker to the log file, so you can mark events
 2.  Make the logging a runtime option instead of statically in the config file
