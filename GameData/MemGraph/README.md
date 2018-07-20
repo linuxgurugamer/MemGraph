@@ -10,13 +10,13 @@ garbage collection causes a stutter, so I have added it to this mod.
 Copy the MemGraph folder from the zip file into the GameData folder of your KSP installation.
 
 ## Usage
-Mod-KeypadMultiply toggles the display of the window.  
-Mod-KeypadPlus increases the vertical scale of the graph.  
-Mod-KeypadMinus decreases the vertical scale of the graph.  
-Mod-KeypadDivide runs a bit of test code controlled by MemGraph\PluginData\test.cfg.  
-Mod-End pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.
-Mod-Home writes a marker to the log file (if logging is enabled, see below)
-Mod-PageUp toggles logging
+	Mod-KeypadMultiply toggles the display of the window.  
+	Mod-KeypadPlus increases the vertical scale of the graph.  
+	Mod-KeypadMinus decreases the vertical scale of the graph.  
+	Mod-KeypadDivide runs a bit of test code controlled by MemGraph\PluginData\test.cfg.  
+	Mod-End pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.
+	Mod-Home writes a marker to the log file (if logging is enabled, see below)
+	Mod-PageUp toggles logging
 
 Every second the plugin totals up all the memory allocated on the heap and whether any garbage collections have run.  It also 
 displays the current total heap allocation, the maximum heap allocation just before the last garbage collection, the minimum 
@@ -57,9 +57,13 @@ Updated by LinuxGuruGamer
 The mod now has the ability to write the data to a set of log files.  The files are written in the root of
 the game directory.
 
-Logging can be enabled by editing the settings.cfg file.  Set the following to true to turn on logging, false to turn it off:
+Logging can be enabled at startup by editing the settings.cfg file.  Set the following to true to turn on logging, false to turn it off:
 
 	enableLogging = true
+
+# Logging Controls
+	Mod-Home writes a marker to the log file (if logging is enabled, see below)
+	Mod-PageUp toggles logging
 
 The first set of files will only have a single value in them at any time.  This will be the last value which
 was plotted.  The name of the file corresponds to the data item as shown on screen:
@@ -77,6 +81,4 @@ as a CSV file, and the first line contains the column headers
 
 	dataLog.Log.txt
 
-I plan on making the following additions:
 
-2.  Make the logging a runtime option instead of statically in the config file

@@ -1,3 +1,6 @@
+1.1.1.1
+	Updated name in .version file
+
 1.1.1.0
 	Adoption by LGG
 	Created Changelog from git history

@@ -1,5 +1,5 @@
 {
-  "NAME": "KerbalSlingShotter",
+  "NAME": "MemGraph",
   "URL": "https://raw.githubusercontent.com/linuxgurugamer/MemGraph/master/MemGraph.version",
   "DOWNLOAD": "https://github.com/linuxgurugamer/MemGraph/releases",
   "GITHUB": {
@@ -10,7 +10,7 @@
     "MAJOR": 1,
     "MINOR": 1,
     "PATCH": 1,
-    "BUILD": 0
+    "BUILD": 1
   },
   "KSP_VERSION": {
     "MAJOR": 1,
