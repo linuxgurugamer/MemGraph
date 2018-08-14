@@ -1,4 +1,4 @@
-# MemGraph
+﻿# MemGraph
 Copyright (c) 2016 Gerry Iles (Padishar)
 
 This started as a simple plugin that displays a graph of the Mono heap allocation rate and garbage collection, mainly intended 
@@ -48,6 +48,20 @@ only intended for 64 bit versions of the game.  Trying to allocate 1024 MB of ex
 to be successful and, if it is, then it will probably cause the game to crash before long due to running out of address space. 
 It is also unlikely to work effectively if your machine has only 4GB of RAM as the total usage of KSP is likely to grow close 
 to 4GB even without loading a save, resulting in virtual memory paging which will seriously hurt performance.
+
+Regarding the padheap.cfg file:
+If the default settings aren't working well for you, try the following steps:
+
+1. Increase the﻿ padheap size in your install: \GameData\MemGraph\PluginData\MemGraph\padheap.cfg, change the "total" number to 4096 
+   or even 6144. See the next section for an example
+2. For example, if you have 16 GB:
+	a. Look at your task manager to find out ﻿how much free ram you have when the game is running. 
+	b. Do this calculation 16 Gb - ~5/6 GB from KSP - 1/2 GB Windows = 8 GB free
+	c. This is the amount of RAM you can use for your padheap total size (in MegaByte 4GB=4096MB).  
+	d.  Always have some Ram to spare of course. 
+Padheap is the volume memgraph is using to save the junk and than deletes it when﻿ its﻿ full.
+
+
 
 The code is released under the MIT license (see https://github.com/Gerry1135/MemGraph/blob/master/Graph.cs).
 
