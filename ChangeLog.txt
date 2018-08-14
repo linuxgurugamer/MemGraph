@@ -1,3 +1,6 @@
+1.1.1.2
+	Removed version number from window title
+
 1.1.1.1
 	Updated name in .version file
 
