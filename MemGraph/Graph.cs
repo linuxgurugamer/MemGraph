@@ -47,7 +47,7 @@ namespace MemGraph
         const int WndWidth = GraphWidth + 8;
         const int WndHeight = GraphHeight + 42;
 
-        const int numScales = 13;   // Number of entries in the scale array
+        const int numScales = 15;   // Number of entries in the scale array
         const int kb = 1024;
         const int mb = kb * kb;
 
@@ -57,9 +57,11 @@ namespace MemGraph
 
         Rect windowPos;
         Rect windowDragRect;
+        Rect helpWinPos;
         int windowId = 0;
         string windowTitle;
         bool showUI = true;
+        bool showHelp = false;
         Rect labelRect;
         Rect graphRect;
 
@@ -155,8 +157,8 @@ namespace MemGraph
 
             padHeap = new PadHeap();
 
-            valCycle = new double[] { 64 * kb, 128 * kb, 256 * kb, 512 * kb, 1 * mb, 2 * mb, 4 * mb, 8 * mb, 16 * mb, 32 * mb, 64 * mb, 128 * mb, 256 * mb };
-            valCycleStr = new string[] { "64 KB", "128 KB", "256 KB", "512 KB", "1 MB", "2 MB", "4 MB", "8 MB", "16 MB", "32 MB", "64 MB", "128 MB", "256 MB" };
+            valCycle = new double[] { 64 * kb, 128 * kb, 256 * kb, 512 * kb, 1 * mb, 2 * mb, 4 * mb, 8 * mb, 16 * mb, 32 * mb, 64 * mb, 128 * mb, 256 * mb, 512 * mb, 1024*mb };
+            valCycleStr = new string[] { "64 KB", "128 KB", "256 KB", "512 KB", "1 MB", "2 MB", "4 MB", "8 MB", "16 MB", "32 MB", "64 MB", "128 MB", "256 MB", "512 MB", "1 GB" };
 
             hexchars = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
 
@@ -164,6 +166,8 @@ namespace MemGraph
             windowDragRect.Set(0, 0, WndWidth, WndHeight);
             labelRect.Set(LabelX, LabelY, LabelWidth, LabelHeight);
             graphRect.Set(GraphX, GraphY, GraphWidth, GraphHeight);
+
+            helpWinPos.Set(40, 40, 500, 300);
 
             values = new long[GraphWidth];
             flags = new bool[GraphWidth];
@@ -206,6 +210,8 @@ namespace MemGraph
         {
             if (applyPadding)
                 padHeap.Pad();
+            areaStyle = new GUIStyle(HighLogic.Skin.textArea);
+            areaStyle.richText = true;
         }
 
         void HandleLevelWasLoaded(GameScenes scene)
@@ -518,13 +524,53 @@ namespace MemGraph
 
             if (showUI)
                 windowPos = GUI.Window(windowId, windowPos, wndFunction, windowTitle);
+
+            if (showHelp)
+                helpWinPos = GUILayout.Window(windowId + 1, helpWinPos, helpWin, "MemGraph Help");
         }
 
         void WindowGUI(int windowID)
         {
+            if (GUI.Button(new Rect(helpWinPos.width - 48, 2, 18, 15), "?"))
+                showHelp = !showHelp;
+
             GUI.Label(labelRect, guiStr, labelStyle);
             GUI.Box(graphRect, texGraph, labelStyle);
             GUI.DragWindow(windowDragRect);
+        }
+        static GUIStyle areaStyle;
+        const string helpText =
+            "<B><color=yellow>General Controls</color></B>\n\n" +
+            "<B>Mod-KeypadMultiply</B> toggles the display of the window.\n" +
+            "<B>Mod-KeypadPlus</B> increases the vertical scale of the graph.\n" +
+            "<B>Mod-KeypadMinus</B> decreases the vertical scale of the graph.\n" +
+            "<B>Mod-KeypadDivide</B> runs a bit of test code controlled by MemGraph\\PluginData\\test.cfg\n" +
+            "<B>Mod-End</B> pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.\n\n" +
+
+            "<B><color=yellow>Logging Controls</color></B>\n\n" +
+
+            "<B>Mod-Home</B> writes a marker to the log file(if logging is enabled, see below)\n" +
+            "<B>Mod-PageUp</B> toggles logging\n\n" +
+
+            "<B><color=yellow>Legend</color>\n\n</B>\b" +
+            "<color=green>Green</color>     Memory﻿ allocation﻿\n" +
+            "<color=red>Red background</color> Garbage collection";
+
+
+        void helpWin(int windowID)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.TextArea(helpText, areaStyle);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Close"))
+                showHelp = false;
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+   
+            GUI.DragWindow();
         }
 
         void RunTestCode()
