@@ -1,6 +1,6 @@
 {
   "NAME": "MemGraph",
-  "URL": "https://raw.githubusercontent.com/linuxgurugamer/MemGraph/master/MemGraph.version",
+  "URL": "http://ksp.spacetux.net/avc/MemGraph",
   "DOWNLOAD": "https://github.com/linuxgurugamer/MemGraph/releases",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
@@ -10,21 +10,21 @@
     "MAJOR": 1,
     "MINOR": 1,
     "PATCH": 1,
-    "BUILD": 3
+    "BUILD": 4
   },
   "KSP_VERSION": {
     "MAJOR": 1,
-    "MINOR": 4,
+    "MINOR": 5,
     "PATCH": 1
   },
   "KSP_VERSION_MIN": {
     "MAJOR": 1,
-    "MINOR": 4,
+    "MINOR": 5,
     "PATCH": 1
   },
   "KSP_VERSION_MAX": {
     "MAJOR": 1,
-    "MINOR": 4,
+    "MINOR": 5,
     "PATCH": 99
   }
 }
