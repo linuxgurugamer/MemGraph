@@ -148,7 +148,7 @@ namespace MemGraph
             DontDestroyOnLoad(gameObject);
 
             instance = this;
-
+            ROOT_PATH = KSPUtil.ApplicationRootPath;
             windowId = Guid.NewGuid().GetHashCode();
             windowTitle = "MemGraph";
 
@@ -330,7 +330,7 @@ namespace MemGraph
         }
 
         const string separator = ",";
-        string ROOT_PATH = KSPUtil.ApplicationRootPath;
+        string ROOT_PATH;
         string filePrefix = "dataLog";
         string fileSuffix = ".txt";
         //bool unixFormat = false;
