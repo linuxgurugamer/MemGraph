@@ -531,6 +531,9 @@ namespace MemGraph
 
         void WindowGUI(int windowID)
         {
+            if (GUI.Button(new Rect(windowPos.width - 18, 3f, 15f, 15f), new GUIContent("X")))
+                showUI = false;
+            
             if (GUI.Button(new Rect(helpWinPos.width - 48, 2, 18, 15), "?"))
                 showHelp = !showHelp;
 

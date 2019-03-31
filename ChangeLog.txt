@@ -1,3 +1,6 @@
+1.1.1.7
+	Added X button to close window
+
 1.1.1.6
 	Fixed bad initialization usage of ApplicationRootPath
 
