@@ -246,3 +246,4 @@ ModelManifest.xml
 *.dll
 .vs
 *~
+.DS_Store

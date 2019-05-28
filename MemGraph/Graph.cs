@@ -27,6 +27,8 @@ using System.Text;
 using UnityEngine;
 using KSP;
 using KSP.IO;
+using ClickThroughFix;
+using ToolbarControl_NS;
 
 
 namespace MemGraph
@@ -137,6 +139,27 @@ namespace MemGraph
             return instance != null ? instance.showUI : false;
         }
 
+		ToolbarControl toolbarControl = null;
+
+		        internal const string MODID = "Memgraph_NS";
+		        internal const string MODNAME = "Memgraph";
+		        private void OnGUIAppLauncherReady()
+		        {
+		            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+		            toolbarControl.AddToAllToolbars(Toggle, Toggle,
+		                ApplicationLauncher.AppScenes.ALLSCENES,
+		                MODID,
+		                "memgraphButton",
+		                "Memgraph/Icons/memgraph_38",
+		                "Memgraph/Icons/memgraph_24",
+		                MODNAME
+		            );
+		        }
+				
+				void Toggle()
+				{
+					showUI = !showUI;
+				}
         void Awake()
         {
             if (instance != null)
