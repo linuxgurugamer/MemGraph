@@ -27,6 +27,8 @@ using System.Text;
 using UnityEngine;
 using KSP;
 using KSP.IO;
+using KSP.UI;
+using KSP.UI.Screens;
 using ClickThroughFix;
 using ToolbarControl_NS;
 
@@ -132,34 +134,44 @@ namespace MemGraph
 
         GUI.WindowFunction wndFunction = null;
 
-        static Graph instance = null;
+        static internal Graph instance = null;
 
         public static bool IsOpen()
         {
             return instance != null ? instance.showUI : false;
         }
 
-		ToolbarControl toolbarControl = null;
+        ToolbarControl toolbarControl = null;
 
-		        internal const string MODID = "Memgraph_NS";
-		        internal const string MODNAME = "Memgraph";
-		        private void OnGUIAppLauncherReady()
-		        {
-		            toolbarControl = gameObject.AddComponent<ToolbarControl>();
-		            toolbarControl.AddToAllToolbars(Toggle, Toggle,
-		                ApplicationLauncher.AppScenes.ALLSCENES,
-		                MODID,
-		                "memgraphButton",
-		                "Memgraph/Icons/memgraph_38",
-		                "Memgraph/Icons/memgraph_24",
-		                MODNAME
-		            );
-		        }
-				
-				void Toggle()
-				{
-					showUI = !showUI;
-				}
+        internal const string MODID = "Memgraph_NS";
+        internal const string MODNAME = "Memgraph";
+        internal void InitToolbar()
+        {
+            if (toolbarControl == null)
+            {
+                toolbarControl = gameObject.AddComponent<ToolbarControl>();
+                toolbarControl.AddToAllToolbars(Toggle, Toggle,
+                    //ApplicationLauncher.AppScenes.SPACECENTER |
+                    ApplicationLauncher.AppScenes.FLIGHT 
+                    /*  |
+                    ApplicationLauncher.AppScenes.MAPVIEW |
+                    ApplicationLauncher.AppScenes.VAB |
+                    ApplicationLauncher.AppScenes.SPH |
+                    ApplicationLauncher.AppScenes.TRACKSTATION */ ,
+                    MODID,
+                    "memgraphButton",
+                    "Memgraph/Icons/memgraph_38",
+                    "Memgraph/Icons/memgraph_24",
+                    MODNAME
+                );
+                UnityEngine.Debug.Log("Memgraph InitToolbar");
+            }
+        }
+
+        void Toggle()
+        {
+            showUI = !showUI;
+        }
         void Awake()
         {
             if (instance != null)
@@ -180,7 +192,7 @@ namespace MemGraph
 
             padHeap = new PadHeap();
 
-            valCycle = new double[] { 64 * kb, 128 * kb, 256 * kb, 512 * kb, 1 * mb, 2 * mb, 4 * mb, 8 * mb, 16 * mb, 32 * mb, 64 * mb, 128 * mb, 256 * mb, 512 * mb, 1024*mb };
+            valCycle = new double[] { 64 * kb, 128 * kb, 256 * kb, 512 * kb, 1 * mb, 2 * mb, 4 * mb, 8 * mb, 16 * mb, 32 * mb, 64 * mb, 128 * mb, 256 * mb, 512 * mb, 1024 * mb };
             valCycleStr = new string[] { "64 KB", "128 KB", "256 KB", "512 KB", "1 MB", "2 MB", "4 MB", "8 MB", "16 MB", "32 MB", "64 MB", "128 MB", "256 MB", "512 MB", "1 GB" };
 
             hexchars = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
@@ -227,6 +239,7 @@ namespace MemGraph
 
             // Force a full update of the graph texture
             fullUpdate = true;
+     
         }
 
         void Start()
@@ -276,7 +289,7 @@ namespace MemGraph
                         else if (key == "keyMark")
                             ReadKeyCode(val, ref keyMark, KeyCode.Home);
                         else if (key == "keyToggleLogging")
-                            ReadKeyCode(val, ref keyToggleLogging, KeyCode.PageUp);                        
+                            ReadKeyCode(val, ref keyToggleLogging, KeyCode.PageUp);
                         else
                         {
                             Log.buf.Append("Ignoring invalid key in settings: '");
@@ -365,7 +378,7 @@ namespace MemGraph
         {
             {
                 string fname = ROOT_PATH + filePrefix + "." + fileName + fileSuffix;
-                
+
                 if (singleLine)
                     System.IO.File.WriteAllText(fname, value + eol);
                 else
@@ -554,9 +567,9 @@ namespace MemGraph
 
         void WindowGUI(int windowID)
         {
-            if (GUI.Button(new Rect(windowPos.width - 18, 3f,18f, 15f), new GUIContent("x")))
+            if (GUI.Button(new Rect(windowPos.width - 18, 3f, 18f, 15f), new GUIContent("x")))
                 showUI = false;
-            
+
             if (GUI.Button(new Rect(helpWinPos.width - 48, 2, 18, 15), "?"))
                 showHelp = !showHelp;
 
@@ -595,7 +608,7 @@ namespace MemGraph
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-   
+
             GUI.DragWindow();
         }
 

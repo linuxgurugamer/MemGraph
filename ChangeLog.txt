@@ -1,3 +1,6 @@
+1.1.1.8
+	Added toolbar buttons, now has ToolbarController as a dependency
+
 1.1.1.7
 	Added X button to close window
 

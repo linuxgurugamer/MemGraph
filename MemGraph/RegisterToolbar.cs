@@ -8,7 +8,9 @@ namespace MemGraph
     {
         void Start()
         {
-            ToolbarControl.RegisterMod(FillItUp.MODID, FillItUp.MODNAME);
+            ToolbarControl.RegisterMod(Graph.MODID, Graph.MODNAME, false, false, true);
+
+            Graph.instance.InitToolbar();
         }
     }
 }
