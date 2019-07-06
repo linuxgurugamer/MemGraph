@@ -164,7 +164,6 @@ namespace MemGraph
                     "Memgraph/Icons/memgraph_24",
                     MODNAME
                 );
-                UnityEngine.Debug.Log("Memgraph InitToolbar");
             }
         }
 
@@ -226,7 +225,7 @@ namespace MemGraph
             ReadSettings();
             showUI = startVisible;
 
-            UpdateGuiStr();
+            WriteLog();
 
             GameEvents.onLevelWasLoaded.Add(HandleLevelWasLoaded);
 
@@ -349,7 +348,7 @@ namespace MemGraph
                 lastUpdateCount = updateCount;
                 lastMinHeapMB = minHeap >> 20;
                 lastMaxHeapMB = maxHeap >> 20;
-                UpdateGuiStr();
+                WriteLog();
 
                 // Reset the values for the next accumulation
                 startTime = endTime;
@@ -409,7 +408,9 @@ namespace MemGraph
             strBuild.Append(lastGCInterval);
             strBuild.Append(" s");
             guiStr = strBuild.ToString();
-
+        }
+        void WriteLog()
+        { 
             if (enableLogging)
             {
                 // Now write to log files
@@ -452,7 +453,7 @@ namespace MemGraph
         {
             //print("Update Start");
             updateCount += 1;
-            AddMemoryIncrement();
+            //AddMemoryIncrement();
 
             if (GameSettings.MODIFIER_KEY.GetKey())
             {
@@ -472,14 +473,14 @@ namespace MemGraph
                 {
                     // Increase scale
                     scaleIndex = (scaleIndex + 1) % numScales;
-                    UpdateGuiStr();
+                    WriteLog();
                     fullUpdate = true;
                 }
                 if (Input.GetKeyDown(keyScaleDown))
                 {
                     // Decrease scale
                     scaleIndex = (scaleIndex + numScales - 1) % numScales;
-                    UpdateGuiStr();
+                    WriteLog();
                     fullUpdate = true;
                 }
                 if (Input.GetKeyDown(keyMark))
@@ -572,7 +573,7 @@ namespace MemGraph
 
             if (GUI.Button(new Rect(helpWinPos.width - 48, 2, 18, 15), "?"))
                 showHelp = !showHelp;
-
+            UpdateGuiStr();
             GUI.Label(labelRect, guiStr, labelStyle);
             GUI.Box(graphRect, texGraph, labelStyle);
             GUI.DragWindow(windowDragRect);

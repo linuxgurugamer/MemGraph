@@ -31,6 +31,8 @@ namespace MemGraph
         public Item8 next = null;
     }
 
+    // The following odd classes are used to force space allocation.  
+#pragma warning disable CS0169
     class Item16
     {
         public Item16 next = null;
@@ -43,6 +45,7 @@ namespace MemGraph
         double d2;// Here to force space allocation
         double d3;// Here to force space allocation
     }
+#pragma warning restore  CS0169
 
     class PadHeap
     {

@@ -1,3 +1,10 @@
+1.1.2
+	Disabled call to AddMemoryIncrement from the Update method
+	Split the UpdateGuiStr into two, new one called WriteLog()
+	Added a call to UpdateGuiStr just before the generated string is written
+	Removed unnecessary Debug.Log line at the end of the InitToolbar method
+	Updated the AssemblyVersion.tt
+
 1.1.1.8
 	Added toolbar buttons, now has ToolbarController as a dependency
 
