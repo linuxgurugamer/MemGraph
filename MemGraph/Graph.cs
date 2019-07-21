@@ -21,16 +21,13 @@
 */
 
 using System;
-//using System.IO;
 using System.Diagnostics;
 using System.Text;
 using UnityEngine;
-using KSP;
 using KSP.IO;
-using KSP.UI;
 using KSP.UI.Screens;
-using ClickThroughFix;
 using ToolbarControl_NS;
+using System.Linq;
 
 
 namespace MemGraph
@@ -152,7 +149,7 @@ namespace MemGraph
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
                 toolbarControl.AddToAllToolbars(Toggle, Toggle,
                     //ApplicationLauncher.AppScenes.SPACECENTER |
-                    ApplicationLauncher.AppScenes.FLIGHT 
+                    ApplicationLauncher.AppScenes.FLIGHT
                     /*  |
                     ApplicationLauncher.AppScenes.MAPVIEW |
                     ApplicationLauncher.AppScenes.VAB |
@@ -171,6 +168,7 @@ namespace MemGraph
         {
             showUI = !showUI;
         }
+        public static bool heapPadderPresent = false;
         void Awake()
         {
             if (instance != null)
@@ -178,6 +176,8 @@ namespace MemGraph
                 gameObject.DestroyGameObject();
                 return;
             }
+            heapPadderPresent = AssemblyLoader.loadedAssemblies.Any(a => a.assembly.GetName().Name == "HeapPadder");
+            UnityEngine.Debug.Log("heapPadderPresent: " + heapPadderPresent);
 
             DontDestroyOnLoad(gameObject);
 
@@ -189,8 +189,13 @@ namespace MemGraph
             strBuild = new StringBuilder(128);
             Log = new LogMsg();
 
-            padHeap = new PadHeap();
-
+            if (!heapPadderPresent)
+                padHeap = new PadHeap();
+            else
+            {
+                UnityEngine.Debug.Log("MemGraph: HeapPadder detected, disabling padding");
+                ScreenMessages.PostScreenMessage("MemGraph: HeapPadder detected, disabling Memgraph padding", 10f, ScreenMessageStyle.UPPER_CENTER);
+            }
             valCycle = new double[] { 64 * kb, 128 * kb, 256 * kb, 512 * kb, 1 * mb, 2 * mb, 4 * mb, 8 * mb, 16 * mb, 32 * mb, 64 * mb, 128 * mb, 256 * mb, 512 * mb, 1024 * mb };
             valCycleStr = new string[] { "64 KB", "128 KB", "256 KB", "512 KB", "1 MB", "2 MB", "4 MB", "8 MB", "16 MB", "32 MB", "64 MB", "128 MB", "256 MB", "512 MB", "1 GB" };
 
@@ -238,12 +243,12 @@ namespace MemGraph
 
             // Force a full update of the graph texture
             fullUpdate = true;
-     
+
         }
 
         void Start()
         {
-            if (applyPadding)
+            if (applyPadding && !heapPadderPresent)
                 padHeap.Pad();
             areaStyle = new GUIStyle(HighLogic.Skin.textArea);
             areaStyle.richText = true;
@@ -410,7 +415,7 @@ namespace MemGraph
             guiStr = strBuild.ToString();
         }
         void WriteLog()
-        { 
+        {
             if (enableLogging)
             {
                 // Now write to log files
@@ -457,7 +462,7 @@ namespace MemGraph
 
             if (GameSettings.MODIFIER_KEY.GetKey())
             {
-                if (Input.GetKeyDown(keyPadHeap))
+                if (Input.GetKeyDown(keyPadHeap) && !heapPadderPresent)
                 {
                     padHeap.Pad();
                 }
@@ -579,14 +584,17 @@ namespace MemGraph
             GUI.DragWindow(windowDragRect);
         }
         static GUIStyle areaStyle;
-        const string helpText =
+        const string helpText1 =
             "<B><color=yellow>General Controls</color></B>\n\n" +
             "<B>Mod-KeypadMultiply</B> toggles the display of the window.\n" +
             "<B>Mod-KeypadPlus</B> increases the vertical scale of the graph.\n" +
             "<B>Mod-KeypadMinus</B> decreases the vertical scale of the graph.\n" +
-            "<B>Mod-KeypadDivide</B> runs a bit of test code controlled by MemGraph\\PluginData\\test.cfg\n" +
-            "<B>Mod-End</B> pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.\n\n" +
+            "<B>Mod-KeypadDivide</B> runs a bit of test code controlled by MemGraph\\PluginData\\test.cfg\n\n";
 
+       const string helpText2 =
+            "<B>Mod-End</B> pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.\n\n";
+
+        const string helpText3 =
             "<B><color=yellow>Logging Controls</color></B>\n\n" +
 
             "<B>Mod-Home</B> writes a marker to the log file(if logging is enabled, see below)\n" +
@@ -600,7 +608,11 @@ namespace MemGraph
         void helpWin(int windowID)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.TextArea(helpText, areaStyle);
+
+            if (heapPadderPresent)
+                GUILayout.TextArea(helpText1 + helpText3, areaStyle);
+            else
+                GUILayout.TextArea(helpText1 + helpText2 + helpText3, areaStyle);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

@@ -58,6 +58,7 @@
       <DependentUpon>AssemblyVersion.tt</DependentUpon>
     </Compile>
     <Compile Include="Graph.cs" />
+    <Compile Include="InstallChecker.cs" />
     <Compile Include="LogMsg.cs" />
     <Compile Include="PadHeap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
