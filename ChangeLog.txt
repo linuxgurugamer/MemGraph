@@ -1,5 +1,10 @@
 ChagneLog
 
+1.2.0.1
+	Renamed DLL for CKAN compatibility
+	Added AssemblyFileVersion
+	Updated version file for 1.12
+
 1.2.0
 	Updated for KSP 1.8
 
