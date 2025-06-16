@@ -1,6 +1,6 @@
 {
   "NAME": "MemGraph",
-  "URL": "http://ksp.spacetux.net/avc/MemGraph",
+  "URL": "https://raw.githubusercontent.com/linuxgurugamer/MemGraph/refs/heads/master/MemGraph.version",
   "DOWNLOAD": "https://github.com/linuxgurugamer/MemGraph/releases",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
