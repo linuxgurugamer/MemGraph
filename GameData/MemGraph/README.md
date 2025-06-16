@@ -13,7 +13,7 @@ Copy the MemGraph folder from the zip file into the GameData folder of your KSP 
 	Mod-KeypadMultiply toggles the display of the window.  
 	Mod-KeypadPlus increases the vertical scale of the graph.  
 	Mod-KeypadMinus decreases the vertical scale of the graph.  
-	Mod-KeypadDivide runs a bit of test code controlled by MemGraph\PluginData\test.cfg.  
+	Mod-KeypadDivide runs a bit of test code controlled by MemGraph/Plugins/PluginData/MemGraph/test.cfg.  
 	Mod-End pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.
 	Mod-Home writes a marker to the log file (if logging is enabled, see below)
 	Mod-PageUp toggles logging
@@ -29,7 +29,7 @@ The test code basically allocates a number of blocks of the specified size and d
 allocated heap to change.  This allows us to deduce various characteristics of the memory allocator and garbage collection 
 mechanisms.
 
-Mod-End activates the heap padding.  The amount of padding is controlled by the MemGraph\PluginData\padheap.cfg.  The format 
+Mod-End activates the heap padding.  The amount of padding is controlled by the MemGraph/Plugins/PluginData/Memgraph/padheap.cfg.  The format 
 of the file is very simple.  Each line controls the number of padding blocks allocated of each size.  The first value is the 
 size of each block allocated and the second is the number of blocks.  The first values are only present for illustration, 
 they don't actually control the size of the blocks, these are hardwired to the sizes in the default configuration.  The 
@@ -52,7 +52,7 @@ to 4GB even without loading a save, resulting in virtual memory paging which wil
 Regarding the padheap.cfg file:
 If the default settings aren't working well for you, try the following steps:
 
-1. Increase the﻿ padheap size in your install: \GameData\MemGraph\PluginData\MemGraph\padheap.cfg, change the "total" number to 4096 
+1. Increase the﻿ padheap size in your install: /GameData/MemGraph/Plugins/PluginData/MemGraph/padheap.cfg, change the "total" number to 4096 
    or even 6144. See the next section for an example
 2. For example, if you have 16 GB:
 	a. Look at your task manager to find out ﻿how much free ram you have when the game is running. 

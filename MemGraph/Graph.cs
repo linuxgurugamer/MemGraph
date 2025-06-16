@@ -19,7 +19,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 */
-
 using System;
 using System.Diagnostics;
 using System.Text;
@@ -369,6 +368,7 @@ namespace MemGraph
             }
         }
 
+        #region NO_LOCALIZATION
         const string separator = ",";
         string ROOT_PATH;
         string filePrefix = "dataLog";
@@ -377,6 +377,7 @@ namespace MemGraph
         string eol = "\r\n";
         string singleLineStr;
         bool header = false;
+        #endregion
 
         public void WriteFile(string fileName, string value, bool singleLine)
         {
@@ -583,13 +584,16 @@ namespace MemGraph
             GUI.Box(graphRect, texGraph, labelStyle);
             GUI.DragWindow(windowDragRect);
         }
+
+        #region NO_LOCALIZsATION
+
         static GUIStyle areaStyle;
         const string helpText1 =
             "<B><color=yellow>General Controls</color></B>\n\n" +
             "<B>Mod-KeypadMultiply</B> toggles the display of the window.\n" +
             "<B>Mod-KeypadPlus</B> increases the vertical scale of the graph.\n" +
             "<B>Mod-KeypadMinus</B> decreases the vertical scale of the graph.\n" +
-            "<B>Mod-KeypadDivide</B> runs a bit of test code controlled by MemGraph\\PluginData\\test.cfg\n\n";
+            "<B>Mod-KeypadDivide</B> runs a bit of test code controlled by MemGraph/Plugins/PluginData/MemGraph/test.cfg\n\n";
 
        const string helpText2 =
             "<B>Mod-End</B> pads the Mono heap with a configurable amount of headroom to reduce frequency of garbage collections.\n\n";
@@ -603,6 +607,7 @@ namespace MemGraph
             "<B><color=yellow>Legend</color>\n\n</B>\b" +
             "<color=green>Green</color>     Memory﻿ allocation﻿\n" +
             "<color=red>Red background</color> Garbage collection";
+        #endregion
 
 
         void helpWin(int windowID)

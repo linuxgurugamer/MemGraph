@@ -1,5 +1,9 @@
 ChagneLog
 
+1.2.1
+	Added code to stop manual padding from happening
+	Updated paths of cfg files in various files
+
 1.2.0.1
 	Renamed DLL for CKAN compatibility
 	Added AssemblyFileVersion

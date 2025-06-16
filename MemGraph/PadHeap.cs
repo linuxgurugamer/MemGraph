@@ -20,8 +20,8 @@
  THE SOFTWARE.
 */
 
-using System;
 using KSP.IO;
+using System;
 
 namespace MemGraph
 {
@@ -62,8 +62,26 @@ namespace MemGraph
         int[] counts = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         object[][] heads = new object[][] { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
 
+            static bool NotOKShown = false;
+        bool OK4ThisKSPVersion()
+        {
+            if (Versioning.version_major == 1 && Versioning.version_minor >= 8 && Versioning.Revision >= 0)
+            {
+                if (!NotOKShown) 
+                ScreenMessages.PostScreenMessage("HeapPadder disabled in this version of KSP (only works on 1.8 and below)",
+                    15, ScreenMessageStyle.LOWER_CENTER);
+                NotOKShown = true;
+                return false;
+            }
+            return true;
+        }
+
         public void Pad()
         {
+
+            if (!OK4ThisKSPVersion())
+                return;
+
             try
             {
                 UpdateFromConfig();
@@ -168,6 +186,9 @@ namespace MemGraph
 
         void Pad8()
         {
+            if (!OK4ThisKSPVersion())
+                return;
+
             long count = counts[0];
             Log.buf.Append("Pad(8): ");
             Log.buf.Append(count);
@@ -203,6 +224,9 @@ namespace MemGraph
 
         void Pad16()
         {
+            if (!OK4ThisKSPVersion())
+                return;
+
             long count = counts[1];
             Log.buf.Append("Pad(16): ");
             Log.buf.Append(count);
@@ -238,6 +262,9 @@ namespace MemGraph
 
         void Pad24()
         {
+            if (!OK4ThisKSPVersion())
+                return;
+
             long count = counts[2];
             Log.buf.Append("Pad(24): ");
             Log.buf.Append(count);
@@ -273,6 +300,9 @@ namespace MemGraph
 
         void PadArray(int index)
         {
+            if (!OK4ThisKSPVersion())
+                return;
+
             int bytes = lengths[index];
             int refCount = (bytes - 24) / 8;
             long count = counts[index];
