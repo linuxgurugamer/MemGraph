@@ -1,7 +1,7 @@
 ChagneLog
 
 1.2.1
-	Added code to stop manual padding from happening
+	Added code to stop manual padding from happening for KSP 1.8+
 	Updated paths of cfg files in various files
 	Updated version file to use github for new version info
 
